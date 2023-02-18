@@ -23,11 +23,25 @@ public class BlogService {
 
     public Blog createAndReturnBlog(Integer userId, String title, String content) {
         //create a blog at the current time
+        Blog blog=new Blog();
+        //updating the blog details
+        blog.setTitle(title);
+        blog.setContent(content);
+        blog.setPubDate(new Date());
 
+        //Updating the userInformation and changing its blogs
+        User user=userRepository1.findById(userId).get();
+        blog.setUser(user);
+        user.getBlogList().add(blog);
+
+        userRepository1.save(user);
+        //cascade effect saves child here blog
+
+        return blog;
     }
 
     public void deleteBlog(int blogId){
         //delete blog and corresponding images
-
+        blogRepository1.deleteById(blogId);
     }
 }
